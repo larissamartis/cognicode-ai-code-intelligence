@@ -1,253 +1,177 @@
-# Automatic Test Case Generator
+<div align="center">
 
-A powerful command-line utility that automatically generates comprehensive pytest test cases for Python functions using Google's Gemini LLM.
+# 🧠 CogniCode: AI Code Intelligence
 
-## 🚀 Features
+**Automated code intelligence and quality audits for Python projects.**
 
-- **AI-Powered Test Generation**: Uses Google's Gemini LLM to create intelligent test cases
-- **Comprehensive Analysis**: Analyzes function signatures, parameters, return types, and complexity
-- **Multiple Test Types**: Generates normal cases, edge cases, and error handling tests
-- **Easy CLI Interface**: Simple command-line interface with colored output
-- **Flexible Configuration**: Customizable settings via environment variables
-- **Batch Processing**: Generate tests for single functions or entire files
-- **Smart Code Analysis**: Extracts function metadata including docstrings and decorators
+CogniCode maps your codebase as a dependency graph, writes pytest tests with AI, runs security scans, and finds duplicate logic. You see all of it in one dashboard in your browser.
 
-## 📋 Requirements
+![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?logo=fastapi&logoColor=white)
+![Gemini](https://img.shields.io/badge/Google-Gemini-4285F4?logo=google&logoColor=white)
+![Groq](https://img.shields.io/badge/Groq-LLM-F55036)
+![pytest](https://img.shields.io/badge/tests-pytest-0A9EDC?logo=pytest&logoColor=white)
 
-- Python 3.7+
-- Google Gemini API key
-- Required Python packages (see `requirements.txt`)
+</div>
 
-## 🛠️ Installation
+---
 
-1. Clone or download the project files
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## ✨ Features
 
-3. Set up your configuration:
-   ```bash
-   python pytest.py setup
-   ```
-   Or manually copy `.env.example` to `.env` and configure:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your Gemini API key
-   ```
+| Module | What it does |
+|---|---|
+| 🕸️ **Graph Explorer** | Parses your code into a dependency graph (NetworkX) of files, classes and functions. Includes search, filters and a collapsible sidebar. |
+| 💥 **Impact Analysis** | Shows which parts of the codebase a file change will affect. |
+| 🧪 **AI Test Generation** | Uses Groq to write pytest cases (normal, edge and error cases) for any function. The tests run live in the browser over a WebSocket. |
+| 📊 **QA Ledger** | Keeps a history of every test run, stored in SQLite. |
+| 🛡️ **Security Command Center** | Runs a static security scan (based on Bandit) to catch hard-coded secrets, injection risks, unsafe deserialization and more. |
+| 📐 **"What-If" Architect** | Lets you simulate architectural changes before you make them. |
+| 🧠 **Semantic Knowledge Base** | Lets you search your code in plain English, using Gemini embeddings and FAISS. |
+| 🧬 **Semantic Clone Detector** | Finds functions that do the same thing even when the code looks different. |
+| 📝 **AI Synopsis** | Writes a short plain-English summary of any node in the graph. |
+| 📄 **Report Generation** | Exports a full quality-audit report covering graph, tests and security. |
+| 🧩 **VS Code Extension** | A lightweight client (`vscode-extension/`) that connects your editor to the CogniCode server. |
 
-## 🔑 Configuration
+---
 
-Create a `.env` file with the following variables:
+## 🏗️ Architecture
+
+```
+┌──────────────────────┐      HTTP / WebSocket      ┌──────────────────────────────┐
+│  Dashboard (browser) │ ◄────────────────────────► │  CogniServer (FastAPI)       │
+│  dashboard/index.html│                            │  ├─ graph_engine.py  (AST →   │
+└──────────────────────┘                            │  │   NetworkX graph)          │
+┌──────────────────────┐                            │  ├─ scanner.py  (security)    │
+│  VS Code extension   │ ◄────────────────────────► │  ├─ clone_detector.py (Gemini │
+└──────────────────────┘                            │  │   + FAISS)                 │
+                                                    │  ├─ database.py  (SQLite)     │
+                                                    │  └─ test generator  (Groq)    │
+                                                    └──────────────────────────────┘
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.9 or newer
+- A [Google Gemini API key](https://aistudio.google.com/app/apikey), used for AI summaries and semantic search
+- A [Groq API key](https://console.groq.com/keys), used for AI test generation
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/larissamartis/cognicode-ai-code-intelligence.git
+cd cognicode-ai-code-intelligence
+```
+
+### 2. Create a virtual environment
+
+```bash
+python -m venv myenv
+
+# Windows
+myenv\Scripts\activate
+
+# macOS / Linux
+source myenv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configure your API keys
+
+```bash
+copy .env.example .env      # Windows
+cp .env.example .env        # macOS / Linux
+```
+
+Open `.env` and fill in your keys:
 
 ```env
-# Required: Your Google Gemini API key
-GEMINI_API_KEY=your_gemini_api_key_here
-
-# Optional configurations
-GEMINI_MODEL=gemini-pro
-MAX_TEST_CASES=10
-INCLUDE_EDGE_CASES=true
-INCLUDE_ERROR_CASES=true
-OUTPUT_DIR=generated_tests
-VERBOSE=false
+GEMINI_API_KEY=your_actual_gemini_key
+GROQ_API_KEY=your_actual_groq_key
 ```
 
-## 📖 Usage
+> 🔒 `.env` is listed in `.gitignore`. **Never commit your real API keys.**
 
-### Basic Commands
+### 5. Start the server
 
-#### Generate tests for a specific function:
 ```bash
-python pytest.py generate path/to/your/file.py function_name
+python -m uvicorn cogniserver.main:app --port 8000
 ```
 
-#### Generate tests for all functions in a file:
-```bash
-python pytest.py generate-all path/to/your/file.py
-```
+On Windows you can also double-click **`run_dashboard.bat`**.
 
-#### List all functions in a file:
-```bash
-python pytest.py list path/to/your/file.py
-```
+### 6. Open the dashboard
 
-#### Get detailed function information:
-```bash
-python pytest.py info path/to/your/file.py function_name
-```
+Go to **http://localhost:8000** in your browser. 🎉
 
-### Advanced Options
+---
 
-#### Custom output file:
-```bash
-python pytest.py generate path/to/file.py function_name -o custom_test_file.py
-```
+## 🔌 API Overview
 
-#### Custom output directory:
-```bash
-python pytest.py generate-all path/to/file.py -d /path/to/output/dir
-```
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/` | Serves the dashboard |
+| `GET` | `/graph` | Returns the full dependency graph |
+| `POST` | `/refresh` | Rebuilds the graph from source |
+| `POST` | `/impact/file` | Returns the impact of changing a file |
+| `GET` | `/summary/{node_id}` | Returns an AI summary of a function or class |
+| `POST` | `/run_test` | Generates and runs tests for a node |
+| `WS` | `/ws/run/{node_id}` | Streams test generation and run output live |
+| `GET` | `/tests/history` | Returns past test results |
+| `GET` | `/clone/scan` | Finds semantic code clones |
+| `GET` | `/knowledge/search?q=` | Runs a natural-language code search |
+| `GET` | `/report/data` | Returns the full audit report data |
 
-#### Verbose output:
-```bash
-python pytest.py generate path/to/file.py function_name -v
-```
+FastAPI also gives you interactive API docs at **http://localhost:8000/docs**.
 
-#### Check configuration:
-```bash
-python pytest.py config
-```
-
-#### Interactive setup:
-```bash
-python pytest.py setup
-```
-
-## 📝 Example Usage
-
-Let's say you have a file `math_utils.py`:
-
-```python
-def calculate_area(length: float, width: float) -> float:
-    """Calculate the area of a rectangle."""
-    if length < 0 or width < 0:
-        raise ValueError("Length and width must be positive")
-    return length * width
-
-def fibonacci(n: int) -> int:
-    """Calculate the nth Fibonacci number."""
-    if n < 0:
-        raise ValueError("n must be non-negative")
-    if n <= 1:
-        return n
-    return fibonacci(n-1) + fibonacci(n-2)
-```
-
-### Generate tests for a single function:
-```bash
-python pytest.py generate math_utils.py calculate_area
-```
-
-This will create a test file `generated_tests/test_math_utils_calculate_area.py` with comprehensive test cases.
-
-### Generate tests for all functions:
-```bash
-python pytest.py generate-all math_utils.py
-```
-
-This will create separate test files for each function.
-
-### List available functions:
-```bash
-python pytest.py list math_utils.py
-```
-
-Output:
-```
-ℹ️  Functions found in math_utils.py:
-   1. calculate_area
-   2. fibonacci
-ℹ️  Total: 2 functions
-```
-
-### Get function details:
-```bash
-python pytest.py info math_utils.py calculate_area
-```
+---
 
 ## 📁 Project Structure
 
 ```
-pytest-generator/
-├── pytest.py              # Main CLI interface
-├── test_generator.py       # Core test generation logic
-├── gemini_client.py       # Gemini LLM integration
-├── utils.py               # Function analysis utilities
-├── config.py              # Configuration management
-├── requirements.txt       # Python dependencies
-├── .env.example          # Environment variables template
-├── README.md             # This file
-└── examples/             # Example files for testing
-    ├── math_utils.py     # Sample math functions
-    ├── string_utils.py   # Sample string functions
-    └── data_structures.py # Sample data structure functions
+cognicode-ai-code-intelligence/
+├── cogniserver/          # FastAPI backend: graph engine, scanner, clone detector, DB
+├── dashboard/            # Single-page web dashboard
+├── cogni/                # Static security analysis engine (based on Bandit)
+├── vscode-extension/     # VS Code client
+├── test_repo/            # Sample e-commerce codebase used as the analysis target
+├── generated_tests/      # AI-generated pytest files
+├── examples/             # Small example modules
+├── tests/                # Unit and functional tests for the security engine
+├── test_generator_groq.py
+├── gemini_client.py
+├── groq_client.py
+├── requirements.txt
+└── .env.example
 ```
 
-## 🎯 Generated Test Features
-
-The generated tests include:
-
-- **Normal/Happy Path Tests**: Basic functionality testing
-- **Edge Cases**: Boundary conditions and special values
-- **Error Handling**: Exception testing and error conditions
-- **Parametrized Tests**: Multiple test scenarios in compact form
-- **Proper Assertions**: Comprehensive pytest assertions
-- **Mock Integration**: Automatic mocking for external dependencies
-- **Clear Documentation**: Descriptive test names and docstrings
-
-## 🔧 Customization
-
-### Environment Variables
-
-- `GEMINI_API_KEY`: Your Gemini API key (required)
-- `GEMINI_MODEL`: Model to use (default: gemini-pro)
-- `MAX_TEST_CASES`: Maximum tests per function (default: 10)
-- `INCLUDE_EDGE_CASES`: Include edge case tests (default: true)
-- `INCLUDE_ERROR_CASES`: Include error handling tests (default: true)
-- `OUTPUT_DIR`: Directory for generated tests (default: generated_tests)
-- `VERBOSE`: Enable verbose output (default: false)
-
-### Modifying Test Generation
-
-You can customize the test generation by modifying the prompts in `gemini_client.py` or adjusting the analysis logic in `utils.py`.
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **"GEMINI_API_KEY not found"**
-   - Make sure you have a `.env` file with your API key
-   - Run `python pytest.py setup` for interactive configuration
-
-2. **"Function not found"**
-   - Use `python pytest.py list file.py` to see available functions
-   - Check function name spelling and case sensitivity
-
-3. **"Syntax errors in generated code"**
-   - The tool attempts to fix syntax errors automatically
-   - Check your Gemini API key and model configuration
-
-4. **Import errors**
-   - Make sure all dependencies are installed: `pip install -r requirements.txt`
-   - Check that your Python environment is properly configured
-
-### Getting Help
-
-- Use the `--verbose` flag for detailed output
-- Run `python pytest.py config` to check your configuration
-- Check the generated test files for any issues
-
-## 🤝 Contributing
-
-This project is open for improvements! Areas for enhancement:
-
-- Support for more LLM providers
-- Additional test frameworks (unittest, nose2)
-- GUI interface
-- Integration with IDEs
-- More sophisticated code analysis
-
-## 📄 License
-
-This project is provided as-is for educational and development purposes.
-
-## 🔗 Related Tools
-
-- [pytest](https://pytest.org/) - Python testing framework
-- [Google Gemini](https://ai.google.dev/) - Google's LLM API
-- [Click](https://click.palletsprojects.com/) - Command line interface creation
+> 💡 By default CogniCode analyses the sample project in `test_repo/`. To analyse your own code, change `ROOT_DIR` in `cogniserver/main.py`.
 
 ---
 
-**Happy Testing! 🧪✨**
+## 🛠️ Tech Stack
+
+**Backend:** Python · FastAPI · Uvicorn · NetworkX · SQLite
+**AI:** Google Gemini · Groq · FAISS
+**Quality and security:** pytest · coverage · Bandit
+**Frontend:** HTML · CSS · JavaScript
+**Editor:** VS Code extension (TypeScript)
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome. For bigger changes, please open an issue first so we can discuss them.
+
+1. Fork the repo
+2. Create a branch: `git checkout -b feature/my-feature`
+3. Commit your changes: `git commit -m "Add my feature"`
+4. Push the branch and open a pull request
