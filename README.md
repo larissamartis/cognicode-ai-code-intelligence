@@ -1,6 +1,6 @@
 <div align="center">
 
-# ðŸ§  CogniCode
+# 🧠 CogniCode: AI Code Intelligence
 
 **Automated code intelligence and quality audits for Python projects.**
 
@@ -16,42 +16,42 @@ CogniCode maps your codebase as a dependency graph, writes pytest tests with AI,
 
 ---
 
-## âœ¨ Features
+## ✨ Features
 
 | Module | What it does |
 |---|---|
-| ðŸ•¸ï¸ **Graph Explorer** | Parses your code into a dependency graph (NetworkX) of files, classes and functions. Includes search, filters and a collapsible sidebar. |
-| ðŸ’¥ **Impact Analysis** | Shows which parts of the codebase a file change will affect. |
-| ðŸ§ª **AI Test Generation** | Uses Groq to write pytest cases (normal, edge and error cases) for any function. The tests run live in the browser over a WebSocket. |
-| ðŸ“Š **QA Ledger** | Keeps a history of every test run, stored in SQLite. |
-| ðŸ›¡ï¸ **Security Command Center** | Runs a static security scan (based on Bandit) to catch hard-coded secrets, injection risks, unsafe deserialization and more. |
-| ðŸ“ **"What-If" Architect** | Lets you simulate architectural changes before you make them. |
-| ðŸ§  **Semantic Knowledge Base** | Lets you search your code in plain English, using Gemini embeddings and FAISS. |
-| ðŸ§¬ **Semantic Clone Detector** | Finds functions that do the same thing even when the code looks different. |
-| ðŸ“ **AI Synopsis** | Writes a short plain-English summary of any node in the graph. |
-| ðŸ“„ **Report Generation** | Exports a full quality-audit report covering graph, tests and security. |
-| ðŸ§© **VS Code Extension** | A lightweight client (`vscode-extension/`) that connects your editor to the CogniCode server. |
+| 🕸️ **Graph Explorer** | Parses your code into a dependency graph (NetworkX) of files, classes and functions. Includes search, filters and a collapsible sidebar. |
+| 💥 **Impact Analysis** | Shows which parts of the codebase a file change will affect. |
+| 🧪 **AI Test Generation** | Uses Groq to write pytest cases (normal, edge and error cases) for any function. The tests run live in the browser over a WebSocket. |
+| 📊 **QA Ledger** | Keeps a history of every test run, stored in SQLite. |
+| 🛡️ **Security Command Center** | Runs a static security scan (based on Bandit) to catch hard-coded secrets, injection risks, unsafe deserialization and more. |
+| 📐 **"What-If" Architect** | Lets you simulate architectural changes before you make them. |
+| 🧠 **Semantic Knowledge Base** | Lets you search your code in plain English, using Gemini embeddings and FAISS. |
+| 🧬 **Semantic Clone Detector** | Finds functions that do the same thing even when the code looks different. |
+| 📝 **AI Synopsis** | Writes a short plain-English summary of any node in the graph. |
+| 📄 **Report Generation** | Exports a full quality-audit report covering graph, tests and security. |
+| 🧩 **VS Code Extension** | A lightweight client (`vscode-extension/`) that connects your editor to the CogniCode server. |
 
 ---
 
-## ðŸ—ï¸ Architecture
+## 🏗️ Architecture
 
 ```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”      HTTP / WebSocket      â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  Dashboard (browser) â”‚ â—„â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–º â”‚  CogniServer (FastAPI)       â”‚
-â”‚  dashboard/index.htmlâ”‚                            â”‚  â”œâ”€ graph_engine.py  (AST â†’   â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜                            â”‚  â”‚   NetworkX graph)          â”‚
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”                            â”‚  â”œâ”€ scanner.py  (security)    â”‚
-â”‚  VS Code extension   â”‚ â—„â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–º â”‚  â”œâ”€ clone_detector.py (Gemini â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜                            â”‚  â”‚   + FAISS)                 â”‚
-                                                    â”‚  â”œâ”€ database.py  (SQLite)     â”‚
-                                                    â”‚  â””â”€ test generator  (Groq)    â”‚
-                                                    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+┌──────────────────────┐      HTTP / WebSocket      ┌──────────────────────────────┐
+│  Dashboard (browser) │ ◄────────────────────────► │  CogniServer (FastAPI)       │
+│  dashboard/index.html│                            │  ├─ graph_engine.py  (AST →   │
+└──────────────────────┘                            │  │   NetworkX graph)          │
+┌──────────────────────┐                            │  ├─ scanner.py  (security)    │
+│  VS Code extension   │ ◄────────────────────────► │  ├─ clone_detector.py (Gemini │
+└──────────────────────┘                            │  │   + FAISS)                 │
+                                                    │  ├─ database.py  (SQLite)     │
+                                                    │  └─ test generator  (Groq)    │
+                                                    └──────────────────────────────┘
 ```
 
 ---
 
-## ðŸš€ Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -98,7 +98,7 @@ GEMINI_API_KEY=your_actual_gemini_key
 GROQ_API_KEY=your_actual_groq_key
 ```
 
-> ðŸ”’ `.env` is listed in `.gitignore`. **Never commit your real API keys.**
+> 🔒 `.env` is listed in `.gitignore`. **Never commit your real API keys.**
 
 ### 5. Start the server
 
@@ -110,11 +110,11 @@ On Windows you can also double-click **`run_dashboard.bat`**.
 
 ### 6. Open the dashboard
 
-Go to **http://localhost:8000** in your browser. ðŸŽ‰
+Go to **http://localhost:8000** in your browser. 🎉
 
 ---
 
-## ðŸ”Œ API Overview
+## 🔌 API Overview
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -134,40 +134,40 @@ FastAPI also gives you interactive API docs at **http://localhost:8000/docs**.
 
 ---
 
-## ðŸ“ Project Structure
+## 📁 Project Structure
 
 ```
-cognicode/
-â”œâ”€â”€ cogniserver/          # FastAPI backend: graph engine, scanner, clone detector, DB
-â”œâ”€â”€ dashboard/            # Single-page web dashboard
-â”œâ”€â”€ cogni/                # Static security analysis engine (based on Bandit)
-â”œâ”€â”€ vscode-extension/     # VS Code client
-â”œâ”€â”€ test_repo/            # Sample e-commerce codebase used as the analysis target
-â”œâ”€â”€ generated_tests/      # AI-generated pytest files
-â”œâ”€â”€ examples/             # Small example modules
-â”œâ”€â”€ tests/                # Unit and functional tests for the security engine
-â”œâ”€â”€ test_generator_groq.py
-â”œâ”€â”€ gemini_client.py
-â”œâ”€â”€ groq_client.py
-â”œâ”€â”€ requirements.txt
-â””â”€â”€ .env.example
+cognicode-ai-code-intelligence/
+├── cogniserver/          # FastAPI backend: graph engine, scanner, clone detector, DB
+├── dashboard/            # Single-page web dashboard
+├── cogni/                # Static security analysis engine (based on Bandit)
+├── vscode-extension/     # VS Code client
+├── test_repo/            # Sample e-commerce codebase used as the analysis target
+├── generated_tests/      # AI-generated pytest files
+├── examples/             # Small example modules
+├── tests/                # Unit and functional tests for the security engine
+├── test_generator_groq.py
+├── gemini_client.py
+├── groq_client.py
+├── requirements.txt
+└── .env.example
 ```
 
-> ðŸ’¡ By default CogniCode analyses the sample project in `test_repo/`. To analyse your own code, change `ROOT_DIR` in `cogniserver/main.py`.
+> 💡 By default CogniCode analyses the sample project in `test_repo/`. To analyse your own code, change `ROOT_DIR` in `cogniserver/main.py`.
 
 ---
 
-## ðŸ› ï¸ Tech Stack
+## 🛠️ Tech Stack
 
-**Backend:** Python Â· FastAPI Â· Uvicorn Â· NetworkX Â· SQLite
-**AI:** Google Gemini Â· Groq Â· FAISS
-**Quality and security:** pytest Â· coverage Â· Bandit
-**Frontend:** HTML Â· CSS Â· JavaScript
+**Backend:** Python · FastAPI · Uvicorn · NetworkX · SQLite
+**AI:** Google Gemini · Groq · FAISS
+**Quality and security:** pytest · coverage · Bandit
+**Frontend:** HTML · CSS · JavaScript
 **Editor:** VS Code extension (TypeScript)
 
 ---
 
-## ðŸ¤ Contributing
+## 🤝 Contributing
 
 Pull requests are welcome. For bigger changes, please open an issue first so we can discuss them.
 
@@ -178,7 +178,7 @@ Pull requests are welcome. For bigger changes, please open an issue first so we 
 
 ---
 
-## ðŸ™ Acknowledgements
+## 🙏 Acknowledgements
 
 - The security scanning engine in `cogni/` is adapted from **[Bandit](https://github.com/PyCQA/bandit)** by PyCQA, licensed under Apache 2.0.
 - AI features are powered by [Google Gemini](https://ai.google.dev/) and [Groq](https://groq.com/).
