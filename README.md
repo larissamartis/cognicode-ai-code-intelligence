@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 # ðŸ§  CogniCode
 
@@ -62,8 +62,8 @@ CogniCode maps your codebase as a dependency graph, writes pytest tests with AI,
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/larissamartis/cognicode.git
-cd cognicode
+git clone https://github.com/larissamartis/cognicode-ai-code-intelligence.git
+cd cognicode-ai-code-intelligence
 ```
 
 ### 2. Create a virtual environment
